@@ -1,6 +1,6 @@
 import React from 'react'
 import './meme.css'
-import memesData from '../src/memesData'
+// import memesData from '../src/memesData'
 
 export default function Meme(){
 
@@ -10,12 +10,18 @@ export default function Meme(){
         randomImage: "http://i.imgflip.com/1bij.jpg"
     })
 
-    const [allMemeImage, setAllMemeImage] = React.useState(memesData)
+    const [allMemes, setAllMemes] = React.useState([])
+
+    React.useEffect(() => {
+        fetch("https://api.imgflip.com/get_memes")
+            .then(res => res.json())
+            .then(data => setAllMemes(data.data.memes))
+    }, [])
 
     function getMemeImage(){
-       const memeArr = allMemeImage.data.memes
-       const randomNumber = Math.floor(Math.random()* memeArr.length)
-       const url = memeArr[randomNumber].url
+    //    const allMemes = allMemes.data.memes
+       const randomNumber = Math.floor(Math.random()* allMemes.length)
+       const url = allMemes[randomNumber].url
 
        setMeme(prevMeme =>({
             ...prevMeme,
@@ -66,6 +72,3 @@ export default function Meme(){
         </main>
     )
 }
-
-
-// I am trying to edit here
